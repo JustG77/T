@@ -52,7 +52,6 @@ button:hover {
 }
 
 #nuBtn {
-    position: absolute;
     transition: all 0.3s ease;
 }
 
@@ -127,9 +126,9 @@ const steps = [
   { type: "question", text: "Te simți în siguranță lângă mine? ❤️" },
   { type: "question", text: "Îți place când fac gesturi mici prin care îți arăt că țin la tine? ❤️" },
   { type: "question", text: "Îți este dor des de mine? 🥹" },
-  { type: "question", text: "Crezi că sunt romanitc? 🤭" }
+  { type: "question", text: "Crezi că sunt romantic? 🤭" },
   { type: "question", text: "Îți place când îți trimit poze cu mine fără să îmi ceri? 🤭" },
-  { type: "question", text: "Crezi că dacă aș știi cât de mult mă iubești mi s-ar urca la cap? 🤭" },
+  { type: "question", text: "Crezi că dacă aș ști cât de mult mă iubești mi s-ar urca la cap? 🤭" },
   { type: "question", text: "Te simți puternică când mă ameninți cu bătaia?💪" },
   { type: "question", text: "Adori să mă tachinezi? 🫣" },
   { type: "question", text: "Te fac sa te simți iubită, apreciată, iubită, dorită și specială? ❤️" },
@@ -195,36 +194,7 @@ function renderStep() {
 
     if (!musicStarted && stepIndex > 0) { music.play(); musicStarted = true; }
 
-    if(step.type === "intro") {
-        questionEl.innerText = step.text;
-        questionEl.classList.remove("fade-slide");
-        void questionEl.offsetWidth;
-        questionEl.classList.add("fade-slide");
-
-        const startBtn = document.createElement("button");
-        startBtn.innerText = "DA";
-        startBtn.addEventListener("click", nextStep);
-
-        const nuBtn = document.createElement("button");
-        nuBtn.innerText = "NU";
-        nuBtn.id = "nuBtn";
-
-        // aici NU începe să se miște doar când dai hover sau atingi
-        nuBtn.addEventListener("mouseenter", () => {
-            const interval = setInterval(() => {
-                const maxX = window.innerWidth - 120;
-                const maxY = window.innerHeight - 200;
-                nuBtn.style.left = Math.random() * maxX + "px";
-                nuBtn.style.top = Math.random() * maxY + "px";
-            }, 300);
-            nuBtn.addEventListener("click", () => { clearInterval(interval); nextStep(); }, { once: true });
-        });
-
-        answersEl.appendChild(startBtn);
-        answersEl.appendChild(nuBtn);
-    }
-
-    if(step.type === "question") {
+    if(step.type === "intro" || step.type === "question") {
         questionEl.innerText = step.text;
         questionEl.classList.remove("fade-slide");
         void questionEl.offsetWidth;
@@ -239,6 +209,7 @@ function renderStep() {
         nuBtn.id = "nuBtn";
 
         nuBtn.addEventListener("mouseenter", () => {
+            nuBtn.style.position = "absolute"; // începe să fugă
             const interval = setInterval(() => {
                 const maxX = window.innerWidth - 120;
                 const maxY = window.innerHeight - 200;
@@ -322,6 +293,7 @@ renderStep();
 
 </body>
 </html>
+
 
 
 
