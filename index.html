@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>Pentru tine ❤️</title>
+  <style>
+    body {
+      background: linear-gradient(#ff9a9e, #fad0c4);
+      font-family: Arial, sans-serif;
+      text-align: center;
+      color: white;
+      padding-top: 60px;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.25);
+      padding: 30px;
+      border-radius: 25px;
+      width: 340px;
+      margin: auto;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    button {
+      margin: 10px;
+      padding: 14px 26px;
+      font-size: 17px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      background: #ff4d6d;
+      color: white;
+      transition: transform 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    #answers {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 26px;
+      animation: floatUp 2s forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-160px); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2 id="question">Ești pregătită? 💖</h2>
+  <div id="answers">
+    <button id="daBtn">DA</button>
+    <button id="nuBtn">NU</button>
+  </div>
+</div>
+
+<audio id="music">
+  <source src="melodie.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  const questions = [
+    "Îți amintești prima noastră conversație? 🥹",
+    "Crezi că avem o conexiune specială? ❤️",
+    "Reușesc în fiecare zi să te fac să zâmbești? ❤️",
+    "Chiar dacă te mai supăr, te simți norocoasă că mă ai? 🥹❤️",
+    "Simți cât de mult te iubesc? ❤️",
+    "Te simți în siguranță lângă mine? ❤️",
+    "Îți place când fac gesturi mici prin care îți arăt că țin la tine? ❤️",
+    "Îți este dor des de mine? 🥹",
+    "Îți place când sunt gelos și posesiv? 😏❤️",
+    "Încă consideri că sunt bărbatul vieții tale? 🫣❤️",
+    "După toate lucrurile, încă mă iubești? 🥹❤️"
+  ];
+
+  let index = 0;
+  let musicStarted = false;
+
+  const daBtn = document.getElementById("daBtn");
+  const nuBtn = document.getElementById("nuBtn");
+  const questionEl = document.getElementById("question");
+  const music = document.getElementById("music");
+
+  function next() {
+    createHeart(daBtn);
+
+    if (!musicStarted) {
+      music.play();
+      musicStarted = true;
+    }
+
+    if (index < questions.length) {
+      questionEl.innerText = questions[index];
+      index++;
+    } else {
+      document.querySelector(".card").innerHTML = `
+        <h2>Te iubesc 🤍</h2>
+        <p>
+          Am vrut să-ți spun altfel cât de mult însemni pentru mine.<br>
+          Mulțumesc că ești a mea. 💖
+        </p>
+        <button onclick="document.getElementById('music').play()">▶ Ascultă din nou</button>
+      `;
+    }
+  }
+
+  daBtn.addEventListener("click", next);
+  nuBtn.addEventListener("click", next);
+
+  // NU fuge de cursor
+  nuBtn.addEventListener("mouseenter", () => {
+    const maxX = window.innerWidth - nuBtn.offsetWidth - 20;
+    const maxY = window.innerHeight - nuBtn.offsetHeight - 20;
+
+    nuBtn.style.position = "absolute";
+    nuBtn.style.left = Math.random() * maxX + "px";
+    nuBtn.style.top = Math.random() * maxY + "px";
+  });
+
+  function createHeart(element) {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "❤️";
+
+    const rect = element.getBoundingClientRect();
+    heart.style.left = rect.left + rect.width / 2 + "px";
+    heart.style.top = rect.top + "px";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 2000);
+  }
+</script>
+
+</body>
+</html>
