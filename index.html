@@ -111,27 +111,26 @@
   questionEl.innerText = questions[index];
   index++;
 } else {
-  // Pasul 1: mesaj emoționant + buton "Încă ceva..."
-  document.querySelector(".card").innerHTML = `
-    <h2>Te iubesc 🤍</h2>
-    <p>
-      Am vrut să-ți spun altfel cât de mult însemni pentru mine.<br>
-      Alături de tine am învățat să iubesc cu adevărat și să mă las iubit.<br>
-      Distanța nu a micșorat dragostea pe care o simt pentru tine, doar a făcut-o mai puternică. ❤️<br>
-      Mulțumesc că după toate greutățile prin care am trecut încă ești aici și ești a mea. 💖
-    </p>
-    <button id="nextBtn">Încă ceva...</button>
-  `;
+document.querySelector(".card").innerHTML = `
+        <h2>Te iubesc 🤍</h2>
+        <p>
+          Am vrut să-ți spun altfel cât de mult însemni pentru mine.<br>
+          Alături de tine am învățat să iubesc cu adevărat și să mă las iubit.<br>
+          Distanța nu a micșorat dragostea pe care o simt pentru tine, doar a făcut-o mai puternică. ❤️<br>
+          Mulțumesc că după toate greutățile prin care am trecut încă ești aici și ești a mea. 💖
+        </p>
+        <button id="nextBtn">Încă ceva...</button>
+      `;
 
-  // Când apăsă butonul "Încă ceva..."
-  document.getElementById("nextBtn").addEventListener("click", () => {
-    document.querySelector(".card").innerHTML = `
-      <h2>Ne vedem curând ❤️</h2>
-      <p>Abia aștept să fim împreună!</p>
-      <button onclick="window.location.reload()">Începe din nou</button>
-    `;
-  });
-}
+      document.getElementById("nextBtn").addEventListener("click", () => {
+        document.querySelector(".card").innerHTML = `
+          <h2>Ne vedem curând ❤️</h2>
+          <p>Abia aștept să fim împreună!</p>
+          <button onclick="window.location.reload()">Începe din nou</button>
+        `;
+      });
+    }
+  }
 
 
   daBtn.addEventListener("click", next);
