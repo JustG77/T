@@ -1,60 +1,82 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8">
-  <title>Pentru tine ❤️</title>
-  <style>
-    body {
-      background: linear-gradient(#ff9a9e, #fad0c4);
-      font-family: Arial, sans-serif;
-      text-align: center;
-      color: white;
-      padding-top: 60px;
-      height: 100vh;
-      overflow: hidden;
-      position: relative;
-    }
-    .card {
-      background: rgba(255,255,255,0.25);
-      padding: 30px;
-      border-radius: 25px;
-      width: 340px;
-      margin: auto;
-      position: relative;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+<meta charset="UTF-8">
+<title>Pentru tine ❤️</title>
+<style>
+  body {
+    background: linear-gradient(#ff9a9e, #fad0c4);
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: white;
+    padding-top: 60px;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.25);
+    padding: 40px 20px;
+    border-radius: 25px;
+    width: 90%;
+    max-width: 400px;
+    margin: auto;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+
+  #question {
+    font-size: 22px;
+    line-height: 1.4;
+  }
+
+  button {
+    margin: 10px;
+    padding: 16px 32px;
+    font-size: 19px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    background: #ff4d6d;
+    color: white;
+    transition: transform 0.2s ease;
+  }
+
+  button:hover {
+    transform: scale(1.05);
+  }
+
+  #answers {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .heart {
+    position: absolute;
+    font-size: 26px;
+    animation: floatUp 2s forwards;
+    pointer-events: none;
+  }
+
+  @keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-160px); }
+  }
+
+  @media (max-width: 480px) {
+    #question {
+      font-size: 24px;
     }
     button {
-      margin: 10px;
-      padding: 14px 26px;
-      font-size: 17px;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      background: #ff4d6d;
-      color: white;
-      transition: transform 0.2s ease;
+      font-size: 20px;
+      padding: 18px 34px;
     }
-    button:hover {
-      transform: scale(1.05);
-    }
-    #answers {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      position: relative;
-    }
-    .heart {
-      position: absolute;
-      font-size: 26px;
-      animation: floatUp 2s forwards;
-      pointer-events: none;
-    }
-    @keyframes floatUp {
-      0% { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(-160px); }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
 
@@ -71,6 +93,8 @@
 </audio>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+
   const questions = [
     "Îți amintești prima noastră conversație? 🥹",
     "Crezi că avem o conexiune specială? ❤️",
@@ -88,12 +112,23 @@
   let index = 0;
   let musicStarted = false;
 
+  const questionEl = document.getElementById("question");
   const daBtn = document.getElementById("daBtn");
   const nuBtn = document.getElementById("nuBtn");
-  const questionEl = document.getElementById("question");
   const music = document.getElementById("music");
 
-  function next() {
+  function createHeart(element) {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "❤️";
+    const rect = element.getBoundingClientRect();
+    heart.style.left = rect.left + rect.width / 2 + "px";
+    heart.style.top = rect.top + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 2000);
+  }
+
+  function nextQuestion() {
     createHeart(daBtn);
 
     if (!musicStarted) {
@@ -122,37 +157,47 @@
           <p>Abia aștept să fim împreună!</p>
           <button onclick="window.location.reload()">Începe din nou</button>
         `;
+
+        setInterval(() => {
+          const heart = document.createElement("div");
+          heart.className = "heart";
+          heart.innerText = "❤️";
+          heart.style.left = Math.random() * (window.innerWidth - 30) + "px";
+          heart.style.top = window.innerHeight + "px";
+          heart.style.fontSize = (20 + Math.random() * 20) + "px";
+          heart.style.position = "fixed";
+          heart.style.zIndex = "1000";
+          document.body.appendChild(heart);
+
+          let topPos = window.innerHeight;
+          const speed = 1 + Math.random() * 2;
+
+          function floatUp() {
+            topPos -= speed;
+            heart.style.top = topPos + "px";
+            if (topPos > -50) requestAnimationFrame(floatUp);
+            else heart.remove();
+          }
+          floatUp();
+        }, 300);
       });
     }
   }
 
-  daBtn.addEventListener("click", next);
-  nuBtn.addEventListener("click", next);
-
+  daBtn.addEventListener("click", nextQuestion);
+  nuBtn.addEventListener("click", nextQuestion);
   nuBtn.addEventListener("mouseenter", () => {
     const maxX = window.innerWidth - nuBtn.offsetWidth - 20;
     const maxY = window.innerHeight - nuBtn.offsetHeight - 20;
-
     nuBtn.style.position = "absolute";
     nuBtn.style.left = Math.random() * maxX + "px";
     nuBtn.style.top = Math.random() * maxY + "px";
   });
 
-  function createHeart(element) {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerText = "❤️";
-
-    const rect = element.getBoundingClientRect();
-    heart.style.left = rect.left + rect.width / 2 + "px";
-    heart.style.top = rect.top + "px";
-
-    document.body.appendChild(heart);
-
-    setTimeout(() => heart.remove(), 2000);
-  }
+});
 </script>
 
 </body>
 </html>
+
 
