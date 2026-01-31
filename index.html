@@ -118,17 +118,26 @@ input[type=range] {
 <script>
 const steps = [
   { type: "intro", text: "Ești pregătită? 💖" },
-  { type: "question", text: "Îți amintești prima noastră conversație? 🥹" },
+  { type: "question", text: "A fost o decizie bună să imi dai ❤️ la postări? 🥹" },
   { type: "question", text: "Crezi că avem o conexiune specială? ❤️" },
+  { type: "question", text: "Îți plac replicile mele spontane 🤭?" },
   { type: "question", text: "Reușesc în fiecare zi să te fac să zâmbești? ❤️" },
   { type: "question", text: "Chiar dacă te mai supăr, te simți norocoasă că mă ai? 🥹❤️" },
   { type: "question", text: "Simți cât de mult te iubesc? ❤️" },
   { type: "question", text: "Te simți în siguranță lângă mine? ❤️" },
   { type: "question", text: "Îți place când fac gesturi mici prin care îți arăt că țin la tine? ❤️" },
   { type: "question", text: "Îți este dor des de mine? 🥹" },
+  { type: "question", text: "Crezi că sunt romanitc? 🤭" }
+  { type: "question", text: "Îți place când îți trimit poze cu mine fără să îmi ceri? 🤭" },
+  { type: "question", text: "Crezi că dacă aș știi cât de mult mă iubești mi s-ar urca la cap? 🤭" },
+  { type: "question", text: "Te simți puternică când mă ameninți cu bătaia?💪" },
+  { type: "question", text: "Adori să mă tachinezi? 🫣" },
+  { type: "question", text: "Te fac sa te simți iubită, apreciată, iubită, dorită și specială? ❤️" },
+  { type: "question", text: "Te-ai urca pe scară ca să-mi dai cu tigaia aia nouă în cap? 🫣" },
+  { type: "question", text: "Îți place când sunt autoritar și mă impun? 🤭" },
+  { type: "question", text: "Mă faci gelos intenționat? 🫣" },
   { type: "question", text: "Îți place când sunt gelos și posesiv? 😏❤️" },
   { type: "question", text: "Încă consideri că sunt bărbatul vieții tale? 🫣❤️" },
-  { type: "question", text: "După toate lucrurile, încă mă iubești? 🥹❤️" },
   { type: "slider", text: "Iubito, după tot ce a fost, cât de mult mă mai iubești?", min: 0, max: 100000000 },
   { type: "text", text: "Ai apărut în viața mea într-un moment dificil, nu știam că o să ajungi să însemni atât de mult pentru mine, dar .." },
   { type: "text", text: "Îți mulțumesc pentru că ai văzut în mine ceva frumos când totul în mine era doar cenușă, iar eu nu am văzut deloc o scorpie cu ochii albaștri." },
@@ -199,12 +208,20 @@ function renderStep() {
         const nuBtn = document.createElement("button");
         nuBtn.innerText = "NU";
         nuBtn.id = "nuBtn";
-        nuBtn.addEventListener("click", () => alert("Poți începe doar dacă ești pregătită 😘"));
+
+        // aici NU începe să se miște doar când dai hover sau atingi
+        nuBtn.addEventListener("mouseenter", () => {
+            const interval = setInterval(() => {
+                const maxX = window.innerWidth - 120;
+                const maxY = window.innerHeight - 200;
+                nuBtn.style.left = Math.random() * maxX + "px";
+                nuBtn.style.top = Math.random() * maxY + "px";
+            }, 300);
+            nuBtn.addEventListener("click", () => { clearInterval(interval); nextStep(); }, { once: true });
+        });
 
         answersEl.appendChild(startBtn);
         answersEl.appendChild(nuBtn);
-        // poziție random pentru NU
-        moveNuRandom(nuBtn);
     }
 
     if(step.type === "question") {
@@ -220,12 +237,19 @@ function renderStep() {
         const nuBtn = document.createElement("button");
         nuBtn.innerText = "NU";
         nuBtn.id = "nuBtn";
-        nuBtn.addEventListener("click", nextStep);
+
+        nuBtn.addEventListener("mouseenter", () => {
+            const interval = setInterval(() => {
+                const maxX = window.innerWidth - 120;
+                const maxY = window.innerHeight - 200;
+                nuBtn.style.left = Math.random() * maxX + "px";
+                nuBtn.style.top = Math.random() * maxY + "px";
+            }, 300);
+            nuBtn.addEventListener("click", () => { clearInterval(interval); nextStep(); }, { once: true });
+        });
 
         answersEl.appendChild(daBtn);
         answersEl.appendChild(nuBtn);
-
-        moveNuRandom(nuBtn);
     }
 
     if(step.type === "slider") {
@@ -283,7 +307,6 @@ function renderStep() {
     }
 }
 
-// FUNCTII
 function nextStep() { stepIndex++; renderStep(); }
 
 function showLast() {
@@ -294,21 +317,12 @@ function showLast() {
     answersEl.innerHTML = `<button onclick="location.reload()">Începe din nou</button>`;
 }
 
-// FUNCTIE PENTRU POZITIE RANDOM NU
-function moveNuRandom(nuBtn){
-    const maxX = window.innerWidth - 120;
-    const maxY = window.innerHeight - 200;
-    const randomX = Math.random() * maxX;
-    const randomY = Math.random() * maxY;
-    nuBtn.style.left = randomX + "px";
-    nuBtn.style.top = randomY + "px";
-}
-
 renderStep();
 </script>
 
 </body>
 </html>
+
 
 
 
